@@ -1,10 +1,13 @@
 package uts.c14220010.recycleview
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import java.lang.reflect.Array
 
 class adapterRevView (private val listWayang: ArrayList<wayang>) : RecyclerView
@@ -13,7 +16,7 @@ class adapterRevView (private val listWayang: ArrayList<wayang>) : RecyclerView
         var _namaWayang = itemView.findViewById<TextView>(R.id.namaWayang)
         var _karakterWayang = itemView.findViewById<TextView>(R.id.karakterWayang)
         var _deskripsiWayang = itemView.findViewById<TextView>(R.id.deskripsiWayang)
-        var _gambarWayang = itemView.findViewById<TextView>(R.id.gambarWayang)
+        var _gambarWayang = itemView.findViewById<ImageView>(R.id.gambarWayang)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
@@ -28,8 +31,10 @@ class adapterRevView (private val listWayang: ArrayList<wayang>) : RecyclerView
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         var wayang = listWayang[position]
-        holder._namaWayang.text = wayang.nama
-        holder._karakterWayang.text = wayang.karakter
-        holder._deskripsiWayang.text = wayang.deskripsi
+        holder._namaWayang.setText(wayang.nama)
+        holder._karakterWayang.setText(wayang.karakter)
+        holder._deskripsiWayang.setText(wayang.deskripsi)
+        Log.d("gambar", wayang.foto)
+        Picasso.get().load(wayang.foto).into(holder._gambarWayang)
     }
 }

@@ -5,15 +5,16 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.lang.reflect.Array
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var _nama : Array<String>
-    private lateinit var _karakter : Array<String>
-    private lateinit var _deskripsi : Array<String>
-    private lateinit var _gambar : Array<String>
+    private lateinit var _nama : kotlin.Array<String>
+    private lateinit var _karakter : kotlin.Array<String>
+    private lateinit var _deskripsi : kotlin.Array<String>
+    private lateinit var _gambar : kotlin.Array<String>
 
     private var arWayang = ArrayList<wayang>()
 
@@ -54,7 +55,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun tampilkanData(){
-        _rvWayang.layoutManager = LinearLayoutManager(this)
+        _rvWayang.layoutManager = GridLayoutManager(this, 2)
         _rvWayang.adapter = adapterRevView(arWayang)
     }
 }
