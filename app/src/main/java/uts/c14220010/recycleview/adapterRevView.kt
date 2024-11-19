@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -18,13 +19,15 @@ class adapterRevView (private val listWayang: ArrayList<wayang>) : RecyclerView
         var _karakterWayang = itemView.findViewById<TextView>(R.id.karakterWayang)
         var _deskripsiWayang = itemView.findViewById<TextView>(R.id.deskripsiWayang)
         var _gambarWayang = itemView.findViewById<ImageView>(R.id.gambarWayang)
-
+        var _btnHapus = itemView.findViewById<Button>(R.id.btnHapus)
     }
 
     private lateinit var onItemClickCallBack: onItemClickCallback
 
     interface onItemClickCallback {
         fun onItemClicked(data: wayang)
+
+        fun delData(pos: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
@@ -42,12 +45,15 @@ class adapterRevView (private val listWayang: ArrayList<wayang>) : RecyclerView
         holder._namaWayang.setText(wayang.nama)
         holder._karakterWayang.setText(wayang.karakter)
         holder._deskripsiWayang.setText(wayang.deskripsi)
-        Log.d("gambar", wayang.foto)
         Picasso.get().load(wayang.foto).into(holder._gambarWayang)
 
         holder._gambarWayang.setOnClickListener {
 //            Toast.makeText(holder.itemView.context, wayang.nama, Toast.LENGTH_LONG).show()
             onItemClickCallBack.onItemClicked(listWayang[position])
+        }
+
+        holder._btnHapus.setOnClickListener {
+            onItemClickCallBack.delData(position)
         }
     }
 

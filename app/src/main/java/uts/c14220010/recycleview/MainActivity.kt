@@ -1,10 +1,12 @@
 package uts.c14220010.recycleview
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -14,10 +16,10 @@ import androidx.recyclerview.widget.RecyclerView
 import java.lang.reflect.Array
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var _nama : kotlin.Array<String>
-    private lateinit var _karakter : kotlin.Array<String>
-    private lateinit var _deskripsi : kotlin.Array<String>
-    private lateinit var _gambar : kotlin.Array<String>
+    private lateinit var _nama : MutableList<String>
+    private lateinit var _karakter : MutableList<String>
+    private lateinit var _deskripsi : MutableList<String>
+    private lateinit var _gambar : MutableList<String>
 
     private var arWayang = ArrayList<wayang>()
 
@@ -39,13 +41,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun siapkanData(){
-        _nama = resources.getStringArray(R.array.namaWayang)
-        _karakter = resources.getStringArray(R.array.karakterUtamaWayang)
-        _deskripsi = resources.getStringArray(R.array.deskripsiWayang)
-        _gambar = resources.getStringArray(R.array.gambarWayang)
+        _nama = resources.getStringArray(R.array.namaWayang).toMutableList()
+        _karakter = resources.getStringArray(R.array.karakterUtamaWayang).toMutableList()
+        _deskripsi = resources.getStringArray(R.array.deskripsiWayang).toMutableList()
+        _gambar = resources.getStringArray(R.array.gambarWayang).toMutableList()
     }
 
     fun tambahData(){
+        arWayang.clear()
         for (position in _nama.indices){
             val data = wayang(
                 _gambar[position],
@@ -68,6 +71,28 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this@MainActivity, detWayang::class.java)
                 intent.putExtra("kirimData", data)
                 startActivity(intent)
+            }
+
+            override fun delData(pos: Int) {
+                AlertDialog.Builder(this@MainActivity)
+                    .setTitle("HAPUS DATA")
+                    .setMessage("Apakah Benar Data "+_nama[pos]+" Akan Dihapus?")
+                    .setPositiveButton(
+                        "HAPUS",
+                        DialogInterface.OnClickListener { dialog, which ->
+                            _gambar.removeAt(pos)
+                            _nama.removeAt(pos)
+                            _karakter.removeAt(pos)
+                            _deskripsi.removeAt(pos)
+                            tambahData()
+                            tampilkanData()
+                        }
+                    )
+                    .setNegativeButton("BATAL",
+                        DialogInterface.OnClickListener { dialog, which ->
+                            Toast.makeText(this@MainActivity, "Data Batal Dihapus", Toast.LENGTH_LONG).show()
+                    }
+                    ).show()
             }
         })
     }
